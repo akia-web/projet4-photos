@@ -2,7 +2,14 @@ import multer from "fastify-multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads");
+    fs.access("./uploads", function (error) {
+      if (error) {
+        console.log("Directory does not exist.");
+        fs.mkdirSync("./uploads");
+      }
+    });
+
+    cb(null, "../front-exemple/public/uploads");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);

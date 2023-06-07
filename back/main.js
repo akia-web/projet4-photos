@@ -9,17 +9,22 @@ import { imageDto } from "./models/imageDto.js";
 import multer from "fastify-multer";
 import { imgUpload } from "./functions/images.js";
 import { generateRandomString } from "./functions/url.js";
+import path from "path";
 
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
 const server = fastify({ logger: true });
 
 server.register(multer.contentParser);
 
 //Probleme de cors
-server.register(cors, {
-  origin: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Authorization", "Content-Type"],
-});
+server.register(
+  cors({
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+  })
+);
 
 // Connexion DB
 
